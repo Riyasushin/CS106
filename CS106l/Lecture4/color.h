@@ -1,0 +1,5 @@
+
+DEFINE_COLOR(Red, Cyan)
+DEFINE_COLOR(Cyan, Red)
+DEFINE_COLOR(Blue, Yellow)
+DEFINE_COLOR(Yellow, Blue)
