@@ -34,15 +34,15 @@ public:
     {
         if (Board->objectName().isEmpty())
             Board->setObjectName("Board");
-        Board->resize(621, 400);
-        Board->setMinimumSize(QSize(600, 400));
-        Board->setMaximumSize(QSize(1000, 400));
+        Board->resize(939, 700);
+        Board->setMinimumSize(QSize(600, 700));
+        Board->setMaximumSize(QSize(1000, 700));
         QFont font;
         font.setPointSize(20);
         Board->setFont(font);
         layoutWidget = new QWidget(Board);
         layoutWidget->setObjectName("layoutWidget");
-        layoutWidget->setGeometry(QRect(440, 160, 151, 191));
+        layoutWidget->setGeometry(QRect(710, 200, 151, 191));
         verticalLayout = new QVBoxLayout(layoutWidget);
         verticalLayout->setObjectName("verticalLayout");
         verticalLayout->setContentsMargins(0, 0, 0, 0);
@@ -68,12 +68,12 @@ public:
 
         IMAGE = new QWidget(Board);
         IMAGE->setObjectName("IMAGE");
-        IMAGE->setGeometry(QRect(440, 30, 131, 81));
+        IMAGE->setGeometry(QRect(710, 70, 131, 81));
         label = new QLabel(Board);
         label->setObjectName("label");
-        label->setGeometry(QRect(490, 120, 61, 31));
+        label->setGeometry(QRect(760, 160, 61, 31));
         QFont font1;
-        font1.setFamilies({QString::fromUtf8("\345\226\234\351\271\212\345\217\244\351\243\216\345\260\217\346\245\267\347\256\200\344\275\223\347\211\210 regular")});
+        font1.setFamilies({QString::fromUtf8("\345\215\216\346\226\207\350\241\214\346\245\267")});
         font1.setPointSize(20);
         label->setFont(font1);
 
@@ -89,7 +89,7 @@ public:
         restart->setText(QCoreApplication::translate("Board", "\351\207\215\346\226\260\345\274\200\345\247\213", nullptr));
         save->setText(QCoreApplication::translate("Board", "\344\277\235\345\255\230\345\257\271\345\261\200", nullptr));
         end->setText(QCoreApplication::translate("Board", "\347\273\223\346\235\237\346\270\270\346\210\217", nullptr));
-        label->setText(QCoreApplication::translate("Board", "\347\231\275\345\255\220", nullptr));
+        label->setText(QCoreApplication::translate("Board", "\351\273\221\345\255\220", nullptr));
     } // retranslateUi
 
 };

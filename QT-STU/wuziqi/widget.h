@@ -5,6 +5,10 @@
 
 #include "board.h"
 
+
+///// 登录界面和设计界面
+///
+
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class Widget;

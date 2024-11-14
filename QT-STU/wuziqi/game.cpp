@@ -7,22 +7,28 @@ Game::Game() {
 
 }
 
-bool Game::isWhite () {
-    return isBai;
+/// 判断现住轮到谁出了
+/// true 为白方该出了
+bool Game::getWhoTurn () {
+    return nowWhite;
+}
+
+void Game::changeTurn() {
+    nowWhite = !nowWhite;
 }
 
 /// TODO 判断能不能落子
 bool Game::canMakeMove(int x, int y) {
-    //return Game::inbound(x, y) && Game::hasused(x, y) && Game::islegal(x, y);
-    return true;
+    return  !Game::hasused(x, y) && Game::islegal(x, y);
+    //Game::inbound(x, y) &&
 }
 
 /// TODO 落子，添加数据，判断输赢，前提是这里合法
-void Game::MakeMove(bool white, int x, int y) {
+void Game::MakeMove(int x, int y) {
 
-    history.push_back({white, x, y, PUSHINGARBAGE });
+    history.push_back({Game::getWhoTurn(), x, y, PUSHINGARBAGE });
     setVis(x, y);
-
+    changeTurn();
 
     for (int i = 0, len = history.size(); i< len - 1; ++i) {
         int x1 = history[i].x, y1 = history[i].y;
@@ -66,7 +72,10 @@ void Game::MakeMove(bool white, int x, int y) {
 
 }
 
-
+/// 返回这一对局有没有被保存
+bool Game::hasSaved() {
+    return isSaved;
+}
 
 
 bool inbound(int x, int y) {
@@ -88,8 +97,12 @@ inline void Game::setVis(int & x, int& y) {
 
 
 
+bool Game::isOver() {
+    return Game::isGameOver;
+}
+
 //  判断赢了没有
-int Game::win() {
+bool Game::win() {
     int id = history.size() - 1;
     if (id < 9)
         return false;
@@ -106,14 +119,28 @@ int Game::win() {
             temp = history[temp].allDirections[7 - i];
         }
 
-        if (tot == 4)///////////////////////
+        if (tot >= 4)/// todo 更合理的判断赢的方式
             return true;
     }
 
     return false;
 }
 
+///todo 变量名字，返回一个宏？？？
+int Game::getWinner() {
+    if (Game::isGameOver) {
+        return !Game::getWhoTurn();
+    } else {
+        return -1;
+    }
+
+
+}
+
 bool Game::tie() {
     return history.size() == 225;
 }
 
+std::vector<Game::Move> Game::getChequers() {
+    return history;
+}
