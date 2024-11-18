@@ -5,11 +5,14 @@
 #include <QPaintEvent>
 #include <QPainter>
 #include <QMouseEvent>
-#include <iostream>
 #include <QDebug>
 #include <QString>
 #include <QMessageBox>
+#include <algorithm>
 #include "game.h"
+#include "filemul.h"
+#include <stdio.h>
+
 
 /// 棋盘界面
 
@@ -28,6 +31,12 @@ public:
 private slots:
     void on_end_clicked();
 
+    void on_restart_clicked();
+
+    void on_huiqi_clicked();
+
+    void on_save_clicked();
+
 private:
 
     const int MARGEIN = 50;
@@ -44,10 +53,18 @@ private:
     void mouseMoveEvent(QMouseEvent *event);
     void mousePressEvent(QMouseEvent *event);
     void closeEvent(QCloseEvent *event);
+    void saveFile();
     QPainter *painter;
     Game *game;
 
     std::pair<int, int> getPointAbsLocation(int mouseX, int mouseY);
+
+    bool isSaved = true; // 空棋盘或者刚打开，视作保存了的，没有更新过数据
+    bool hasSaved(); /// TODO 保存对局后更新这一步，有新操作后更新
+    void turnToNotSaved();
+    std::string filename = "";
+
+    void openGameFile(std::string filename);
 
 
 signals:

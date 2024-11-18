@@ -26,7 +26,7 @@ Board::~Board()
 void Board::on_end_clicked()
 {
     /// 判断保存了没有
-
+    /// TODO
 
     emit goBackStart();
 }
@@ -48,11 +48,13 @@ void Board::paintEvent(QPaintEvent *event){
     }
 
     /// draw chequers
-    const std::vector<Game::Move> s = game->getChequers();
-    for (int i = 0, len = s.size(); i < len; ++i) {
-        int x1 = s[i].x, y1 = s[i].y;
+    const std::vector<Game::Move>* s = game->getChequers();
+
+    for (auto it = s->begin(), ed = s->end(); it != ed; ++it) {
+            int x1 = it->x, y1 = it->y;
+
          //// TODO 把画棋子封装成小函数
-        if (s[i].bai) { /// BAO LOU JIE KOU LE
+        if (it->bai) { /// BAO LOU JIE KOU LE
             painter->setBrush(QBrush(Qt::white, Qt::SolidPattern));
             painter->drawEllipse(x + WIDTH * x1 - R, y + WIDTH * y1 - R, R * 2, R * 2);
 
@@ -61,6 +63,8 @@ void Board::paintEvent(QPaintEvent *event){
             painter->drawEllipse(x + WIDTH * x1 - R, y + WIDTH * y1 - R, R * 2, R * 2);
         }
     }
+
+    /// TODO 画虚拟的棋子
 
     painter->end();
 }
@@ -74,7 +78,7 @@ void Board::mouseMoveEvent(QMouseEvent *event) {
     if (mouseX >= MARGEIN / 2 && mouseX <= MARGEIN + WIDTH * LINE + MARGEIN / 2
         && mouseY >= MARGEIN / 2 && mouseY <= MARGEIN + WIDTH * LINE + MARGEIN / 2) {
 
-        qDebug() << mouseX << " " << mouseY;
+        qDebug() << "mouse move:" << mouseX << " " << mouseY;
 
     }
 
@@ -83,7 +87,7 @@ void Board::mouseMoveEvent(QMouseEvent *event) {
 /// 鼠标释放，画实心的
 void Board::mousePressEvent(QMouseEvent *event) {
 
-    if (game->isOver())
+    if (game->getWinner() != -1)
         return;
 
     int mouseX = event->x(), mouseY = event->y();
@@ -97,7 +101,7 @@ void Board::mousePressEvent(QMouseEvent *event) {
         bool canMove = game->canMakeMove(absX, absY);
         if (canMove) {
 
-
+            Board::turnToNotSaved();
             game->MakeMove(absX, absY);
 
             update();
@@ -126,7 +130,7 @@ void Board::mousePressEvent(QMouseEvent *event) {
 
 //// TODO 自定义内容
 void Board::closeEvent(QCloseEvent *event) {
-    if (game->hasSaved()) {
+    if (hasSaved()) {
 
     } else {
         /// 没有被保存，弹出提示框进行保存
@@ -137,6 +141,8 @@ void Board::closeEvent(QCloseEvent *event) {
         if (result == QMessageBox::Yes) {
             /// TODO
             /// SAVE IT!!!
+            Board::saveFile();
+
             event->accept();
         } else {
             event->ignore();
@@ -150,4 +156,70 @@ std::pair<int, int> Board::getPointAbsLocation(int mouseX, int mouseY) {
     x = ( mouseX - MARGEIN + EDGE  - 1) / WIDTH;
     y = ( mouseY - MARGEIN + EDGE  - 1) / WIDTH;
     return std::make_pair(x, y);
+}
+
+/// 保存文件
+void Board::saveFile() {
+    //// TODO
+    /// 如果处于已保存状态不用理会
+    /// 更改是否保存过这一变量
+
+    if (filename.size() == 0) {
+        std::stringstream oss;
+        oss << __DATE__ << " " << __TIME__ << ".dat";
+        filename = oss.str();
+        std::replace(filename.begin(), filename.end(), ':', '-');
+    }
+
+    if (filemul::writeToFile(game->getChequers(),  filename  ) ) {
+        qDebug() << "succeed saving the game";
+    }
+}
+
+/// 重新开始对局
+void Board::on_restart_clicked()
+{
+    /// 友好提示框
+    QString dialtitle = "Warning";
+    QString strInfo = "本操作不可撤销，确定重新开始吗";
+    QMessageBox::StandardButton result=QMessageBox::question(this, dialtitle, strInfo,
+                                                               QMessageBox::Yes|QMessageBox::No );
+    if (result == QMessageBox::Yes) {
+        /// TODO
+        /// SAVE IT!!!
+        game->restart();
+        update();
+    }
+
+}
+
+
+void Board::on_huiqi_clicked()
+{
+    /// TODO 怎么禁止AI 悔棋， 好像不用，因为AI 不会悔棋
+    game->huiqi();
+    update();
+}
+
+/// 按键保存
+void Board::on_save_clicked()
+{
+    Board::saveFile();
+}
+
+
+bool Board::hasSaved() {
+    return isSaved;
+}
+
+/// 根据传输得到的文件名
+void Board::openGameFile(std::string filename) {
+    /// 打开文件
+    /// 读取内容
+    /// 读取成功更新issaved filename等变量
+    /// 不成功创建新的棋盘
+}
+
+void Board::turnToNotSaved() {
+    isSaved = false;
 }

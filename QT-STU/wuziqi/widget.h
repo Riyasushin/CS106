@@ -4,6 +4,7 @@
 #include <QWidget>
 
 #include "board.h"
+#include "filemul.h"
 
 
 ///// 登录界面和设计界面
@@ -25,6 +26,8 @@ public:
 
 private slots:
     void on_pvp_clicked();
+
+    void on_load_clicked();
 
 private:
     Ui::Widget *ui;
