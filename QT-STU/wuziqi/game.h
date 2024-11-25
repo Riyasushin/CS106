@@ -4,12 +4,17 @@
 #include <vector>
 #include <string>
 #include <sstream>
+#include <fstream>
+
 
 
 class Game
 {
+
 public:
     Game();
+
+
 
     struct Move{
         bool bai; // 是白的还是黑的
@@ -18,7 +23,7 @@ public:
     };
 
     bool getWhoTurn();
-
+    int loadGame(const std::vector<Game::Move> his);
 
     /// TODO 判断能不能落子
     bool canMakeMove(int x, int y);
@@ -42,6 +47,8 @@ public:
 
     void restart();
     void huiqi();
+
+    static std::string GAMEFILESUF;
 
 private:
 
@@ -92,5 +99,7 @@ private:
     const int next03111[5] = {};
     const int next31110[5] = {};
 };
+
+std::string Game::GAMEFILESUF = ".dat";
 
 #endif // GAME_H

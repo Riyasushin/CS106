@@ -7,6 +7,10 @@ Game::Game() {
 
 }
 
+
+
+
+
 /// 判断现住轮到谁出了
 /// true 为白方该出了
 bool Game::getWhoTurn () {
@@ -239,6 +243,12 @@ void Game::huiqi() {
             history[fr].allDirections[7 - i] = - 1;
         }
     }
+
+
+}
+
+//// TODO 根据给出的向量更新位置
+int Game::loadGame(const std::vector<Game::Move> his) {
 
 
 }

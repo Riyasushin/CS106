@@ -33,5 +33,6 @@ private:
     Ui::Widget *ui;
     /// 为什么不是Ui::
     Board *board;
+    void openGame(std::string oldfiles);
 };
 #endif // WIDGET_H

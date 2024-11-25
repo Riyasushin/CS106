@@ -213,11 +213,14 @@ bool Board::hasSaved() {
 }
 
 /// 根据传输得到的文件名
+/// TODO
 void Board::openGameFile(std::string filename) {
     /// 打开文件
-    /// 读取内容
-    /// 读取成功更新issaved filename等变量
-    /// 不成功创建新的棋盘
+    std::vector<Game::Move> his;
+
+
+    /// 读取成功让GAME更新issaved filename等变量
+
 }
 
 void Board::turnToNotSaved() {

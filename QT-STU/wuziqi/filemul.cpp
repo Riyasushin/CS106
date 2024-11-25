@@ -4,9 +4,32 @@
 
 
 int readFromFile();
-int readFileList();
 
-/// 写入文件
+/// 读取当前路径下所有以SUF为结尾的文件
+/// 用到了io.h 可能无可移植性
+std::vector<std::string> readFileList(std::string suf) {
+
+    std::vector<std::string> res;
+
+    //文件句柄
+    //注意：我发现有些文章代码此处是long类型，实测运行中会报错访问异常
+    intptr_t hFile = 0;
+    //文件信息
+    struct _finddata_t fileinfo;
+
+    if ((hFile = _findfirst(suf.c_str(), &fileinfo)) != -1)
+    {
+        do
+        {
+            res.push_back(fileinfo.name);
+        } while (_findnext(hFile, &fileinfo) == 0);
+        _findclose(hFile);
+    }
+
+    return res;
+}
+
+/// 写入i文件
 int filemul::writeToFile(const std::vector<Game::Move>* history, const std::string filename) {
     std::ofstream oss(filename.c_str());
 

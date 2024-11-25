@@ -26,6 +26,7 @@ class Board : public QWidget
 
 public:
     explicit Board(QWidget *parent = nullptr);
+    void openGameFile(std::string filename);
     ~Board();
 
 private slots:
@@ -62,9 +63,9 @@ private:
     bool isSaved = true; // 空棋盘或者刚打开，视作保存了的，没有更新过数据
     bool hasSaved(); /// TODO 保存对局后更新这一步，有新操作后更新
     void turnToNotSaved();
-    std::string filename = "";
+    std::string filename = "";/// TODO 有用吗
 
-    void openGameFile(std::string filename);
+
 
 
 signals:
