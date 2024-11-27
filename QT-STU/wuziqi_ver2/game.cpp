@@ -137,6 +137,7 @@ bool game::loadDataToGame(const std::vector<Move>& his) {
     for (size_t i = 0, len = his.size(); i < len; ++i) {
         const Move* temp = &his[i];
         if (canMakeMove(temp->x, temp->y)) {
+            qDebug() << "load move :" << temp->x << " " << temp->y << " " << temp->color;
             MakeMove(temp->x, temp->y, temp->color);
         } else {
             restart();

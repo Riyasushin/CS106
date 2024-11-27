@@ -31,7 +31,7 @@ public:
      * @param history  传一个引用，给里面加上读取到的数据
      * @return  返回读取成功了没有，不抛出异常，之后文件界面进行处理TODO
      */
-    static bool readFromFile(std::string filename, std::vector<game::Move> history) {
+    static bool readFromFile(std::string filename, std::vector<game::Move>& history) {
         std::ifstream  oss(filename.c_str());
         if (oss.is_open()) {
             std::string headcode;
@@ -60,6 +60,7 @@ public:
             qDebug() << "fail to open " << filename.c_str();
             return false;
         }
+        return true;
     }
 
     /**

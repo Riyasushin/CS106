@@ -133,16 +133,13 @@ void Board::closeEvent(QCloseEvent *event) {
         QString dialtitle = "Warning";
         QString strInfo = "你的对局还没有保存，是否确定保存并退出";
         QMessageBox::StandardButton result=QMessageBox::question(this, dialtitle, strInfo,
-                                                                   QMessageBox::Yes|QMessageBox::No |  QMessageBox::Cancel);
+                                                                   QMessageBox::Yes|QMessageBox::No );
         if (result == QMessageBox::Yes) {
             /// TODO
             /// SAVE IT!!!
             Board::saveFile();
-
-            event->accept();
-        } else {
-            event->ignore();
         }
+        event->accept();
     }
 }
 
@@ -186,11 +183,6 @@ void Board::on_save_clicked()
 }
 
 
-bool Board::hasSaved() {
-    return isSaved;
-}
-
-
 /// TODO : 怎么吧文件名传过来
 void Board::openGameFile(const std::string filename) {
 
@@ -214,7 +206,7 @@ void Board::on_end_clicked()
         QString dialtitle = "Warning";
         QString strInfo = "你的对局还没有保存，是否确定保存并退出";
         QMessageBox::StandardButton result=QMessageBox::question(this, dialtitle, strInfo,
-                                                                   QMessageBox::Yes|QMessageBox::No |  QMessageBox::Cancel);
+                                                                   QMessageBox::Yes|QMessageBox::No);
         if (result == QMessageBox::Yes) {
             /// TODO
             /// SAVE IT!!!
@@ -230,6 +222,8 @@ void Board::saveFile() {
     //// TODO
     /// 如果处于已保存状态不用理会
     /// 更改是否保存过这一变量
+    if (isSaved)
+        return;
 
     /// 代表没有文件名在加载中，还没有保存过
     if (filename.size() == 0) {
@@ -244,10 +238,14 @@ void Board::saveFile() {
     /// 有了文件名了，向里面保存就可以
     if (fileutils::writeTo(Game->getGameData(),  filename ) ) {
         qDebug() << "succeed saving the game";
+        YesSaved();
         /// TODO: GUI it!
     }
 }
 
+bool Board::hasSaved() {
+    return isSaved;
+}
 
 void Board::NotSave() {
     isSaved = false;

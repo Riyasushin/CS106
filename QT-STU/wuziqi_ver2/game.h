@@ -9,6 +9,7 @@
 #include<vector>
 #include <string>
 #include "grid.h"
+#include <QDebug>
 
 /// fill the move
 #define PUSHINGARBAGE {-1, -1, -1, -1, -1, -1, -1, -1}

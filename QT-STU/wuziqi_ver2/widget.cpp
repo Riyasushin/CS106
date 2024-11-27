@@ -6,6 +6,15 @@ Widget::Widget(QWidget *parent)
     , ui(new Ui::Widget)
 {
 
+    ui->setupUi(this);
+    this->setWindowTitle("五子棋v1.12.0");
+
+    board = new Board;
+
+    connect(board, &Board::goBackStart, this, [=](){
+        this->show();
+        board->hide();
+    });
 
     Widget::openGame("");
 
@@ -18,8 +27,14 @@ Widget::~Widget()
 
 void Widget::on_pvp_clicked()
 {
-    this->hide();
-    board->show();
+    Widget::openGameBoard();
+}
+
+void Widget::receiveStringSlot(const QString &receivedString)
+{
+    // 在这里对接收到的字符串进行处理
+    qDebug() << "接收到的文件名：" << receivedString;
+    Widget::openGame(receivedString.toStdString().append(".data"));
 }
 
 /// 准备载入残局
@@ -45,26 +60,25 @@ void Widget::on_load_clicked()
         }
     } else {
         // 创建并显示新窗口
-        ItemListWindow *window = new ItemListWindow(nullptr, filelist);
-        window->setWindowTitle("残局加载");
-        window->resize(400, 300);
-        window->exec(); // 使用 exec() 使其成为模态对话框
-
+        fileopenboard = new fileOpenUI(filelist);
+        fileopenboard->show();
+        connect(fileopenboard, &fileOpenUI::sendStringSignal, this, &Widget::receiveStringSlot);
     }
 
 }
 
 void Widget::openGame(std::string oldfiles){
-    ui->setupUi(this);
 
-    this->setWindowTitle("五子棋v1.12.0");
-
-    board = new Board;
     if (oldfiles.size() > 0) {
         board->openGameFile(oldfiles);
+        Widget::openGameBoard();
     }
-    connect(board, &Board::goBackStart, this, [=](){
-        this->show();
-        board->hide();
-    });
+
+
 }
+
+void Widget::openGameBoard() {
+    this->hide();
+    board->show();
+}
+
